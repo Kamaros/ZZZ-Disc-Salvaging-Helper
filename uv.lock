@@ -1691,7 +1691,7 @@ wheels = [
 ]
 
 [[package]]
-name = "zzz-disk-salvaging-helper"
+name = "zzz-disc-salvaging-helper"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

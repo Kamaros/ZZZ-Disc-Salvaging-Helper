@@ -2,4 +2,4 @@
 .venv
 __pycache__
 characters_output_*.json
-drive_disk_salvaging_helper_*.csv
+drive_disc_salvaging_helper_*.csv

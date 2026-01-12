@@ -75,14 +75,14 @@ def scrape_prydwen(version: str):
         }
 
         # Prydwen does not group section headers and their associated sections, so we make liberal use of next_sibling
-        disk_drives_header = character_content.find(generate_tag_text_filter(name='div', class_=['content-header', character_element], text='Best Disk Drives Sets'))
+        drive_discs_header = character_content.find(generate_tag_text_filter(name='div', class_=['content-header', character_element], text='Best Disk Drives Sets'))
 
-        if disk_drives_header:
-            disk_drives_section = disk_drives_header.next_sibling
+        if drive_discs_header:
+            drive_discs_section = drive_discs_header.next_sibling
 
-            disk_drives = {}
+            drive_discs = {}
 
-            four_pc_sections = disk_drives_section.find_all('div', class_=f'single-item {character_element}')
+            four_pc_sections = drive_discs_section.find_all('div', class_=f'single-item {character_element}')
             for i, four_pc_section in enumerate(four_pc_sections):
                 four_pc_set_element = four_pc_section.find('span', class_='zzz-weapon-name rarity-S')
                 if four_pc_set_element:
@@ -105,7 +105,7 @@ def scrape_prydwen(version: str):
                             if '(Recommended)' in two_pc_sets_section.get_text():
                                 recommended_two_pc_sets.append(two_pc_set_names)
 
-                        disk_drives[i] = {
+                        drive_discs[i] = {
                             '4pc Set': four_pc_set,
                             'Recommended 2pc Sets': to_flat_list_str(recommended_two_pc_sets),
                             'All 2pc Sets': to_flat_list_str(two_pc_sets)
@@ -114,51 +114,51 @@ def scrape_prydwen(version: str):
                         # As of Jan 2026, some agents like Evelyn appear to be missing 2pc set recommendations, so we only
                         # include 4pc sets for such agents
                         print('Could not find 2pc sets')
-                        disk_drives[i] = {
+                        drive_discs[i] = {
                             '4pc Set': four_pc_set
                         }
                 else:
                     print('Could not find 4pc set name')
 
-            characters[character_name]['Disk Drives'] = disk_drives
+            characters[character_name]['Drive Discs'] = drive_discs
 
             stats_header = character_content.find(generate_tag_text_filter(name='div', class_=['content-header', character_element], text='Best Disk Drives Stats'))
             if stats_header:
                 stats_section = stats_header.next_sibling
 
-                disk_four_stats = []
-                disk_five_stats = []
-                disk_six_stats = []
+                disc_four_stats = []
+                disc_five_stats = []
+                disc_six_stats = []
                 substats = []
 
                 # Some characters like Astra have multiple `.main-stats` sections corresponding to different builds, so
                 # we represent each stat as a list and join the values for each stat
                 main_stats_sections = stats_section.find_all('div', class_='main-stats')
                 for main_stats_section in main_stats_sections:
-                    disk_four_stats.append(extract_main_stats_from_box_div(main_stats_section.contents[0]))
-                    disk_five_stats.append(extract_main_stats_from_box_div(main_stats_section.contents[1]))
-                    disk_six_stats.append(extract_main_stats_from_box_div(main_stats_section.contents[2]))
+                    disc_four_stats.append(extract_main_stats_from_box_div(main_stats_section.contents[0]))
+                    disc_five_stats.append(extract_main_stats_from_box_div(main_stats_section.contents[1]))
+                    disc_six_stats.append(extract_main_stats_from_box_div(main_stats_section.contents[2]))
 
                     substats_section = main_stats_section.next_sibling
                     substats.append(get_iterator_element_at_index(substats_section.find('p').strings, 2))
 
                 # Dedupe any repeated values for clarity
-                disk_four_stats = list(dict.fromkeys(disk_four_stats))
-                disk_five_stats = list(dict.fromkeys(disk_five_stats))
-                disk_six_stats = list(dict.fromkeys(disk_six_stats))
+                disc_four_stats = list(dict.fromkeys(disc_four_stats))
+                disc_five_stats = list(dict.fromkeys(disc_five_stats))
+                disc_six_stats = list(dict.fromkeys(disc_six_stats))
                 substats = list(dict.fromkeys(substats))
 
                 characters[character_name]['Stats'] = {
-                    'Disk 4': ', '.join(disk_four_stats),
-                    'Disk 5': ', '.join(disk_five_stats),
-                    'Disk 6': ', '.join(disk_six_stats),
+                    'Disc 4': ', '.join(disc_four_stats),
+                    'Disc 5': ', '.join(disc_five_stats),
+                    'Disc 6': ', '.join(disc_six_stats),
                     'Substats': ', '.join(substats)
                 }
 
             else:
                 print('Could not find Stats section')
         else:
-            print('Could not find Disk Drives section')
+            print('Could not find Drive Discs section')
 
         print(f'Finished processing: {character_url}')
 
