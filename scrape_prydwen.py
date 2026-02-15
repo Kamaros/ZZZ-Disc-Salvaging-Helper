@@ -110,13 +110,29 @@ def scrape_prydwen(version: str):
                             'Recommended 2pc Sets': to_flat_list_str(recommended_two_pc_sets),
                             'All 2pc Sets': to_flat_list_str(two_pc_sets)
                         }
+                    elif character_name == 'Evelyn':
+                        # As of February 2026, Evelyn only has 4pc sets listed, so we manually populate some 2pc sets
+                        # from https://docs.google.com/spreadsheets/d/e/2PACX-1vTj2PaPq6Py_1B5fsOPj_Moc-tN_7mut7fICczI6lz1njyEIAInTnfB7lAraX4pYCRGNbaHGlIbFZ90/pubhtml#gid=0
+                        if four_pc_set == 'Hormone Punk':
+                            drive_discs[i] = {
+                                '4pc Set': four_pc_set,
+                                'Recommended 2pc Sets': 'Puffer Electro',
+                                'All 2pc Sets': 'Puffer Electro, Branch & Blade Song, Woodpecker Electro, Astral Voice, Inferno Metal'
+                            }
+                        elif four_pc_set == 'Puffer Electro':
+                            drive_discs[i] = {
+                                '4pc Set': four_pc_set,
+                                'Recommended 2pc Sets': 'Branch & Blade Song, Woodpecker Electro',
+                                'All 2pc Sets': 'Branch & Blade Song, Woodpecker Electro, Astral Voice, Hormone Punk, Inferno Metal'
+                            }
+                        elif four_pc_set == 'Astral Voice':
+                            drive_discs[i] = {
+                                '4pc Set': four_pc_set,
+                                'Recommended 2pc Sets': 'Puffer Electro',
+                                'All 2pc Sets': 'Puffer Electro, Branch & Blade Song, Woodpecker Electro, Hormone Punk, Inferno Metal'
+                            }
                     else:
-                        # As of Jan 2026, some agents like Evelyn appear to be missing 2pc set recommendations, so we only
-                        # include 4pc sets for such agents
                         print('Could not find 2pc sets')
-                        drive_discs[i] = {
-                            '4pc Set': four_pc_set
-                        }
                 else:
                     print('Could not find 4pc set name')
 
