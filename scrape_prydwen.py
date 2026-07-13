@@ -2,14 +2,17 @@ from collections.abc import Iterator
 from datetime import datetime
 import itertools
 import json
+from time import sleep
 
 from bs4 import BeautifulSoup, Tag
-import requests
+from curl_cffi import requests
 
 def extract_page_source(url: str):
-    response = requests.get(url)
+    response = requests.get(url, impersonate='chrome110')
     if response.status_code == 200:
         return BeautifulSoup(response.text, 'html.parser')
+
+    print(f'Failed to retrieve page source; Prydwen returned {response.status_code}')
     return None
 
 # Beautiful Soup's built-in `find` and `find_all` methods will not match elements with multiple children when using the
@@ -42,7 +45,7 @@ def scrape_prydwen(version: str):
     character_url_list = []
 
     # Extract links to each character's page from main /characters listing
-    character_cards = content.find_all('div', class_='avatar-card card')
+    character_cards = content.find_all('div', class_='pw-card avatar-card')
     if character_cards:
         for character_card in character_cards:
             relative_character_url = character_card.find('a')['href']
@@ -177,6 +180,7 @@ def scrape_prydwen(version: str):
             print('Could not find Drive Discs section')
 
         print(f'Finished processing: {character_url}')
+        sleep(5)
 
     file_path = f"characters_output_{version}.json"
 
