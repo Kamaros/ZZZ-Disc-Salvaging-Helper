@@ -49,7 +49,7 @@ def scrape_prydwen(version: str):
     if character_cards:
         for character_card in character_cards:
             relative_character_url = character_card.find('a')['href']
-            character_url_list.append(f"{base_url}{relative_character_url}")
+            character_url_list.append(f'{base_url}{relative_character_url}')
     else:
         print('Could not find character cards. `/characters` list format must have changed.')
 
@@ -98,7 +98,7 @@ def scrape_prydwen(version: str):
                     if two_pc_sets_list:
                         two_pc_sets = []
                         recommended_two_pc_sets = []
-                        for j, two_pc_sets_section in enumerate(two_pc_sets_list.children):
+                        for two_pc_sets_section in two_pc_sets_list.children:
                             # Each two_pc_sets_section can contain multiple 2pc sets sharing the same 2pc bonus, so
                             # two_pc_sets is an object mapping indexes to lists, where sets in each inner list have the
                             # same 2pc bonus
@@ -191,4 +191,4 @@ def scrape_prydwen(version: str):
 
     end_timestamp = datetime.now()
     print(f"{end_timestamp}: Completed processing")
-    print(f"Took: {(end_timestamp - start_timestamp).total_seconds() % 60}")
+    print(f"Took: {(end_timestamp - start_timestamp).total_seconds()} seconds")
